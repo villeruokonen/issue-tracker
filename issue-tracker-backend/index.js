@@ -61,7 +61,7 @@ app.get('/profile', (req, res) => {
 
 // logout
 app.post('/logout', (req, res) => {
-    res.clearCookie('token').json({ message: 'Logged out successfully.' });
+    res.clearCookie('authToken').json({ message: 'Logged out successfully.' });
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
