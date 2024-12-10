@@ -31,7 +31,7 @@ export const useAuthStore = defineStore('auth',
       async login(username: string, password: string): Promise<void> {
         try {
           console.log("Logging in...");
-          const response = await apiClient.post<LoginResponse>('/login', { username, password }, { withCredentials: true });
+          const response = await apiClient.post<LoginResponse>('/api/auth/login', { username, password }, { withCredentials: true });
 
           if (response.data.success) {
             const { user } = response.data;
@@ -51,7 +51,7 @@ export const useAuthStore = defineStore('auth',
       },
       async fetchProfile(): Promise<void> {
         try {
-          const response = await apiClient.get('/profile');
+          const response = await apiClient.get('/api/auth/session');
           this.user = response.data.user;
           this.isAuthenticated = this.user != null;
         } catch (error: unknown) {
@@ -63,7 +63,7 @@ export const useAuthStore = defineStore('auth',
         }
       },
       async logout(): Promise<void> {
-        await apiClient.post('/logout');
+        await apiClient.post('/api/auth/logout');
         localStorage.removeItem("authToken");
         this.user = null;
         this.isAuthenticated = false;

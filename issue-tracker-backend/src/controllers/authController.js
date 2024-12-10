@@ -1,31 +1,14 @@
-const express = require('express');
-const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
 
 require('dotenv').config();
 
-const app = express();
-const PORT = 5000;
-
 const JWT_SECRET = process.env.JWT_SECRET;
-
-app.use(bodyParser.json());
-app.use(cookieParser());
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 
 // testing "database"
 const users = [{ id: 1, username: 'test', password: bcrypt.hashSync('123', 10) }];
 
-app.get('/', (req, res) =>
-{
-    res.send('<h1>API</h1>')
-});
-
-// Login route
-app.post('/login', (req, res) => {
+const login = (req, res) => {
     const { username, password } = req.body;
 
     const user = users.find((u) => u.username === username);
@@ -44,10 +27,14 @@ app.post('/login', (req, res) => {
                 token: token
             }
         })
-});
+};
 
-// profile fetch
-app.get('/profile', (req, res) => {
+// logout
+const logout = (req, res) => {
+    res.clearCookie('authToken').json({ message: 'Logged out successfully.' });
+};
+
+const getSession = (req, res) => {
     const token = req.cookies.authToken;
     if (!token) return res.status(401).json({ message: 'Unauthorized' });
 
@@ -57,11 +44,6 @@ app.get('/profile', (req, res) => {
     } catch (error) {
         res.status(401).json({ message: 'Invalid token' });
     }
-});
+};
 
-// logout
-app.post('/logout', (req, res) => {
-    res.clearCookie('authToken').json({ message: 'Logged out successfully.' });
-});
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+module.exports = { login, logout, getSession };
