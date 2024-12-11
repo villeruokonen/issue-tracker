@@ -1,6 +1,8 @@
+
 <template>
   <div class="dashboard">
     <h1>Dashboard</h1>
+    <ProjectList/>
     <button @click="handleLogout">Log out</button>
   </div>
 </template>
@@ -16,6 +18,7 @@
 </style>
 
 <script lang="ts">
+import ProjectList from '@/components/ProjectList.vue';
 import { useAuthStore } from '../stores/auth';
 
 export default {
@@ -32,5 +35,8 @@ export default {
       this.$router.push('/');
     },
   },
+  components: {
+    ProjectList
+  }
 };
 </script>
