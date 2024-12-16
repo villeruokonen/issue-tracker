@@ -46,13 +46,4 @@ const getSession = (req, res) => {
     }
 };
 
-const checkCredentials = (token) => {
-    try {
-        return jwt.verify(token, JWT_SECRET);
-    } catch (err) {
-        console.error(err.message);
-        return false;
-    }
-}
-
-module.exports = { login, logout, getSession, checkCredentials };
+module.exports = { login, logout, getSession };
