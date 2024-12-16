@@ -36,7 +36,7 @@ export const useAuthStore = defineStore('auth',
           if (response.data.success) {
             const { user } = response.data;
             console.log (`Login success. Welcome, ${user.username}`);
-            localStorage.setItem("authToken", user.token);
+            localStorage.setItem("token", user.token);
             this.user = user;
             this.isAuthenticated = true;
           } else {
@@ -64,7 +64,7 @@ export const useAuthStore = defineStore('auth',
       },
       async logout(): Promise<void> {
         await apiClient.post('/api/auth/logout');
-        localStorage.removeItem("authToken");
+        localStorage.removeItem("token");
         this.user = null;
         this.isAuthenticated = false;
       }
