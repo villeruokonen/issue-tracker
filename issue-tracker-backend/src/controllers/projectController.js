@@ -1,6 +1,4 @@
-const jwt = require('jsonwebtoken');
-
-const { checkCredentials } = require('../controllers/authController');
+const { checkCredentials } = require('../utils/authUtils');
 
 // mock database
 const projects = [
@@ -22,10 +20,8 @@ const projects = [
 ]
 
 const getProjects = (req, res) => {
-    /* AUTH
     const token = req.cookies.authToken;
     if (!checkCredentials(token)) return res.status(401).json({ message: 'Unauthorized' });
-    */
 
     var trimIssues = projects.map((p) => ({
         ...p,
@@ -35,18 +31,4 @@ const getProjects = (req, res) => {
     res.json(trimIssues);
 }
 
-const getProjectIssues = (req, res) => {
-    /* AUTH
-    const token = req.cookies.authToken;
-    if (!checkCredentials(token)) return res.status(401).json({ message: 'Unauthorized' });
-    */
-
-    const projectId = req.params.id;
-    const project = projects.find(p => p.id === parseInt(projectId, 10));
-
-    if (!project) return res.status(404).json({ error: `Project with id ${projectId} not found`});
-
-    res.json(project.issues);
-}
-
-module.exports = { getProjects, getProjectIssues };
+module.exports = { getProjects, projects };
