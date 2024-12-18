@@ -9,7 +9,10 @@ const PORT = 5000;
 
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+if (process.env.NODE_ENV === 'production')
+    app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+else
+    app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 
 app.use('/api', routes);
 

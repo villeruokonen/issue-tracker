@@ -1,0 +1,36 @@
+services:
+    backend:
+        container_name: backend
+        build:
+            context: ./issue-tracker-backend
+        ports:
+            - "5000:5000"
+        environment:
+            - DB_URL=postgresql://user:password@database:5432/issuetracker
+        volumes:
+            - ./issue-tracker-backend:/app
+    
+    frontend:
+        container_name: frontend
+        build:
+            context: ./issue-tracker-app
+        ports:
+            - "3000:80"
+        volumes:
+            - ./issue-tracker-app:/app
+            - /app/node_modules
+    
+    database:
+        container_name: database
+        image: postgres
+        environment:
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: issue-tracker
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+
+volumes:
+    db-data:
